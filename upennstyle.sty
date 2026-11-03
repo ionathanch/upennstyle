@@ -1,0 +1,357 @@
+% Modified from the University of Pennsylvania PhD Dissertation LaTeX Template,
+% which was adapted from Penn Biostat LaTeX Template,
+% which was modified from the Dissertation Template for Wharton PhD Candidates in LaTeX.
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{upennstyle}[2026/08/23 University of Pennsylvania Dissertation Style]
+
+\RequirePackage[margin=1in,
+                nohead,
+                includeheadfoot,
+                letterpaper]{geometry}
+\RequirePackage[doublespacing]{setspace}
+\RequirePackage{parskip}
+\RequirePackage{tocloft}
+\RequirePackage[compact]{titlesec}
+\RequirePackage{hyperref}
+
+\newcommand{\titlefamily}{\rmfamily}
+\newcommand{\secfamily}{\bfseries\sffamily}
+
+% CHAPTERS AND SECTIONS
+\renewcommand{\beforetitleunit}{0 pt}
+\titleformat{\section}[hang]{\secfamily\large}{\thesection}{1em}{}
+\titleformat{\subsection}[hang]{\secfamily\normalsize}{\thesubsection}{1em}{}
+\titleformat*{\paragraph}{\secfamily}
+\titlespacing*{\section}{0pt}{0.5\baselineskip}{0pt}
+\titlespacing*{\subsection}{0pt}{0.5\baselineskip}{0pt}
+\counterwithout{footnote}{chapter}
+
+% TABLE OF CONTENTS TITLE
+\renewcommand{\cftbeforetoctitleskip}{-21pt}
+\renewcommand{\cfttoctitlefont}{\large\hfil} % why does `\hfill` not work?
+\renewcommand{\contentsname}{TABLE OF CONTENTS}
+\renewcommand{\cftaftertoctitle}{\hfill}
+\renewcommand{\cftaftertoctitleskip}{0pt}
+
+% TOC ENTRIES
+\setcounter{tocdepth}{1}
+\renewcommand{\cftchappresnum}{CHAPTER }
+\renewcommand{\cftchapfont}{\upshape}
+\renewcommand{\cftchappagefont}{\upshape}
+\renewcommand{\cftchapleader}{\upshape\cftdotfill{\cftdotsep}}
+\newlength{\cftchaplen}
+\settowidth{\cftchaplen}{\cftchappresnum}
+\addtolength{\cftchapnumwidth}{\cftchaplen}
+
+% LIST OF TABLES TITLE
+\renewcommand{\cftbeforelottitleskip}{-12pt}
+\renewcommand{\cftlottitlefont}{\large\hfill}
+\renewcommand{\listtablename}{LIST OF TABLES}
+\renewcommand{\cftafterlottitle}{\hfill}
+\renewcommand{\cftafterlottitleskip}{0.5\baselineskip}
+
+% LOT ENTRIES
+\renewcommand{\cfttabindent}{0pt}
+\renewcommand{\cfttabpresnum}{Table }
+\renewcommand{\cfttableader}{\cftdotfill{\cftdotsep}}
+\newlength{\cfttablen}
+\settowidth{\cfttablen}{\cfttabpresnum}
+\addtolength{\cfttabnumwidth}{\cfttablen}
+
+% LIST OF FIGURES TITLE
+\renewcommand{\cftbeforeloftitleskip}{-12pt}
+\renewcommand{\cftloftitlefont}{\large\hfill}
+\renewcommand{\listfigurename}{LIST OF FIGURES}
+\renewcommand{\cftafterloftitle}{\hfill}
+\renewcommand{\cftafterloftitleskip}{0.5\baselineskip}
+
+% LOF ENTRIES
+\renewcommand{\cftfigindent}{0pt}
+\renewcommand{\cftfigpresnum}{Figure }
+\renewcommand{\cftfigleader}{\cftdotfill{\cftdotsep}}
+\newlength{\cftfiglen}
+\settowidth{\cftfiglen}{\cftfigpresnum}
+\addtolength{\cftfignumwidth}{\cftfiglen}
+
+% TITLE PAGE
+\newcommand{\specialization}[1]{%
+  \expandafter\gdef\csname specialization@\endcsname{#1}}
+\newcommand{\gradgroup}[1]{%
+  \expandafter\gdef\csname gradgroup@\endcsname{#1}}
+\newcommand{\supervisor}[1]{%
+  \expandafter\gdef\csname supervisor@\endcsname{#1}}
+\newcount\cosup@cnt
+\cosup@cnt=0
+\newcommand{\cosupervisor}[1]{%
+  \expandafter\gdef\csname cosupervisor@\romannumeral\cosup@cnt\endcsname{#1}%
+  \advance\cosup@cnt by 1}
+\newcommand{\supervisortitle}[1]{%
+  \expandafter\gdef\csname supervisortitle@\endcsname{#1}}
+\newcommand{\cosupervisortitle}[1]{%
+  \expandafter\gdef\csname cosupervisortitle@\endcsname{#1}}
+\newcommand{\gradchair}[1]{%
+  \expandafter\gdef\csname gradchair@\endcsname{#1}}
+\newcount\comm@cnt
+\comm@cnt=1
+\newcommand{\committee}[1]{%
+  \expandafter\gdef\csname committee@\romannumeral\comm@cnt\endcsname{#1}%
+  \advance\comm@cnt by 1}
+
+\renewcommand\maketitle{\par
+  \begingroup
+    \singlespace
+    \@maketitle
+    \pagenumbering{roman}
+  \endgroup
+  \global\let\maketitle\relax
+  \global\let\@maketitle\relax
+  \global\let\@commitee\@empty
+  \global\let\committee\relax
+  \global\let\and\relax
+}
+
+\newcommand{\@maketitle}{
+  \newgeometry{margin=1in}
+  \thispagestyle{empty}
+  \begin{center}
+    \MakeUppercase{\@title} \\
+    \@author \\
+    A DISSERTATION PROPOSAL \\
+    in \\
+    {\csname gradgroup@\endcsname} \\
+    Presented to the Faculties of the University of Pennsylvania \\
+    in \\
+    Partial Fulfillment of the Requirements for the \\
+    Degree of Doctor of Philosophy \\
+    \@date
+    \vfill
+  \end{center}
+  \begin{flushleft}
+    \ifnum \cosup@cnt=0
+      Supervisor of Dissertation \\
+      {\csname supervisor@\endcsname},
+      {\csname supervisortitle@\endcsname}
+    \else
+      \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} p{0.4\linewidth} p{0.4\linewidth}}%
+         Supervisor of Dissertation & Co-Supervisor of Dissertation \\ & \\
+         {\csname supervisor@\endcsname} & {\csname cosupervisor@\endcsname} \\ & \\
+         {\csname supervisortitle@\endcsname} & {\csname cosupervisortitle@\endcsname}
+      \end{tabular*}
+    \fi
+    \\[\baselineskip]
+    Graduate Group Chairperson \\
+    {\csname gradchair@\endcsname}
+    \\[\baselineskip]
+    Dissertation Committee \\
+    \begin{singlespace}
+      \newcount\n
+      \n=1
+      \loop {\csname committee@\romannumeral\n\endcsname}
+      \advance \n by 1
+      \ifnum\n<\comm@cnt
+      \\
+      \repeat
+    \end{singlespace}
+  \end{flushleft}
+  \thispagestyle{empty}
+  \clearpage
+  \restoregeometry
+}
+
+\newcommand{\makespecializationtitle}{\par
+  \begingroup
+    \singlespace
+    \@makespecializationtitlepage
+    \pagenumbering{roman}
+  \endgroup
+  \global\let\makespecializationtitle\relax
+  \global\let\@makespecializationtitle\relax
+  \global\let\@commitee\@empty
+  \global\let\committee\relax
+  \global\let\and\relax
+}
+
+\newcommand{\@makespecializationtitlepage}{%
+  \newgeometry{margin=1in}
+  \thispagestyle{empty}
+  \begin{center}
+    \MakeUppercase{\@title} \\
+    \@author \\
+    A DISSERTATION \\
+    in \\
+    {\csname specialization@\endcsname} \\
+    For the Graduate Group in {\csname gradgroup@\endcsname} \\
+    Presented to the Faculties of the University of Pennsylvania \\
+    in \\
+    Partial Fulfillment of the Requirements for the \\
+    Degree of Doctor of Philosophy \\
+    \@date
+    \vfill
+  \end{center}
+  \begin{flushleft}
+    \ifnum \cosup@cnt=0
+      Supervisor of Dissertation \\
+      {\csname supervisor@\endcsname},
+      {\csname supervisortitle@\endcsname}
+    \else
+      \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} p{0.4\linewidth} p{0.4\linewidth}}
+        Supervisor of Dissertation & Co-Supervisor of Dissertation \\ & \\
+        {\csname supervisor@\endcsname} & {\csname cosupervisor@\endcsname} \\ & \\
+        {\csname supervisortitle@\endcsname} & {\csname cosupervisortitle@\endcsname}
+      \end{tabular*}
+    \fi
+    \\[\baselineskip]
+    Graduate Group Chairperson \\
+    {\csname gradchair@\endcsname}
+    \\[\baselineskip]
+    Dissertation Committee \\
+    \begin{singlespace}
+      \newcount\n
+      \n=1
+      \loop {\csname committee@\romannumeral\n\endcsname}
+      \advance \n by 1
+      \ifnum\n<\comm@cnt
+      \\
+      \repeat
+    \end{singlespace}
+  \end{flushleft}
+  \thispagestyle{empty}
+  \clearpage
+  \restoregeometry
+}
+
+\newcommand{\ifundefined}[1]{\expandafter\ifx\csname#1\endcsname\relax}
+
+% COPYRIGHT NOTICE
+\newcommand{\authorlegal}[1]{%
+  \expandafter\gdef\csname authorlegal@\endcsname{#1}}
+\newcommand{\cclicense}[1]{%
+  \expandafter\gdef\csname cclicense@\endcsname{#1}}
+\newcommand{\cclicenseurl}[1]{%
+  \expandafter\gdef\csname cclicenseurl@\endcsname{#1}}
+
+\newcommand{\makecopyright}{
+  \newgeometry{margin=1in}
+  \vspace*{\fill}
+  \thispagestyle{empty}
+  \begin{flushleft}
+    \MakeUppercase{\@title} \\
+    COPYRIGHT \\
+    \@date \\
+    {\csname authorlegal@\endcsname} \\
+  \end{flushleft}
+  \clearpage
+  \restoregeometry
+}
+
+\newcommand{\makecreativecommons}{
+  \newgeometry{margin=1in}
+  \vspace*{\fill}
+  \thispagestyle{empty}
+  \begin{flushleft}
+    \MakeUppercase{\@title} \\
+    COPYRIGHT \\
+    \@date \\
+    {\csname authorlegal@\endcsname} \\
+    This work is licensed under Creative Commons {\csname cclicense@\endcsname}. \\
+    To view a copy of this license, visit \url{\csname cclicenseurl@\endcsname}.
+  \end{flushleft}
+  \clearpage
+  \restoregeometry
+}
+
+% DEDICATION
+\newcommand{\dedication}[1]{%
+  \expandafter\gdef\csname dedication@\endcsname{#1}}
+\newcommand{\makededication}{%
+  \textit{{\csname dedication@\endcsname}}}
+
+% ACKNOWLEDGEMENTS
+\newcommand{\acknowledgements}[1]{%
+  \expandafter\gdef\csname acknowledgements@\endcsname{#1}}
+\newcommand{\makeacknowledgements}{
+  \titleformat{\chapter}[hang]{\large\center}{\thechapter}{0 pt}{}
+  \titlespacing*{\chapter}{0pt}{-33pt}{0pt}
+  \chapter*{ACKNOWLEDGEMENTS}
+  \addcontentsline{toc}{chapter}{ACKNOWLEDGEMENTS}
+  {\csname acknowledgements@\endcsname}
+}
+
+% ABSTRACT
+\renewcommand{\abstract}[1]{%
+  \expandafter\gdef\csname abstract@\endcsname{#1}}
+\newcommand{\makeabstract}{
+  \titleformat{\chapter}[hang]{\large\center}{\thechapter}{0 pt}{}
+  \titlespacing*{\chapter}{0pt}{-33pt}{0pt}
+  \chapter*{ABSTRACT}
+  \addcontentsline{toc}{chapter}{ABSTRACT}
+  \begin{center}
+    \MakeUppercase{\@title} \\
+    \@author \\
+    \ifnum \cosup@cnt=0
+      {\csname supervisor@\endcsname} \\
+    \else
+      {\csname supervisor@\endcsname} \\
+      {\csname cosupervisor@\endcsname} \\
+    \fi
+  \end{center}
+  {\csname abstract@\endcsname}
+  \clearpage
+}
+
+% LIST OF TABLES
+\newcommand{\makelot}{
+  \newpage
+  \begin{singlespacing}
+  \listoftables
+  \end{singlespacing}
+}
+
+% LIST OF FIGURES
+\newcommand{\makelof}{
+  \newpage
+  \begin{singlespacing}
+  \listoffigures
+  \end{singlespacing}
+}
+
+% PREFACE
+\newcommand{\preface}[1]{%
+  \expandafter\gdef\csname preface@\endcsname{#1}}
+\newcommand{\makepreface}{
+   \clearpage
+   \titleformat{\chapter}[hang]{\large\center}{\thechapter}{0 pt}{}
+   \titlespacing*{\chapter}{0pt}{-33pt}{0pt}
+   \chapter*{PREFACE}
+   \addcontentsline{toc}{chapter}{PREFACE}
+   {\csname preface@\endcsname}
+}
+
+% MAIN TEXT
+\newenvironment{mainf}{
+  \titleformat{\chapter}[hang]{\large\titlefamily}{\thechapter}{1.5 em}{}
+  \titlespacing*{\chapter}{0pt}{-33pt}{0pt}
+  \newpage
+  \pagenumbering{arabic}
+  \pagestyle{plain} % This has to be repeated here because the lists change the style
+}{}
+
+% APPENDIX
+\newenvironment{append}{
+  \renewcommand{\thechapter}{\Alph{chapter}}
+  \setcounter{chapter}{0}
+  \titleformat{\chapter}[hang]{\large\titlefamily}{\thechapter}{1.5 em}{}
+  \addtocontents{toc}{\protect\renewcommand{\protect\cftchappresnum}{APPENDIX }}
+  \addtocontents{toc}{\protect\setcounter{tocdepth}{0}}
+}{}
+
+% BIBLIOGRAPHY
+\newenvironment{bibliof}{
+  \singlespacing
+  \renewcommand\bibname{REFERENCES}
+  \titleformat{\chapter}[hang]{\large\center}{\thechapter}{0 pt}{}
+  \titlespacing*{\chapter}{0pt}{-25pt}{0pt}
+  \setlength{\bibsep}{\baselineskip}
+  \clearpage
+}{}
